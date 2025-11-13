@@ -328,7 +328,9 @@ a {
 
 .single-portfolio {
   margin-bottom: 50px;
-  display: block; }
+  aspect-ratio: 1;
+  display: block; 
+}
   .single-portfolio .relative {
     margin-bottom: 20px; }
   .single-portfolio .p-inner {

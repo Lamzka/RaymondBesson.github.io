@@ -13,6 +13,14 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700" rel="stylesheet">
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
 
 </head>
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
@@ -85,10 +93,225 @@
 	<section class="site-section" id="section-description">
 		<div class="container">
 			<div class="row justify-content-center mb-5">
-				<div class="col-md-10 text-center">
+				<div class="col-md-10">
 					<h2 class="site-heading mb-3">My Code</h2>
+
+					<h5 class="site-heading mb-3">Steering wheel input system</h5>
+                    <br>
+					<h7 class="site-heading mb-3">I developed a custom input system for the Logitech G21. The official SDK only provided a basic demo script and lacked a builtin input manager, so we had to build our own from scratch. We initially attempted to use Unity’s new Input System, but it didn’t register the G21 inputs correctly. As a result, we had to improvise and create a custom solution tailored to the hardware. </h7>
+					<br>
+					<br>
+                    <h7 class="site-heading mb-3">This script was used to get the states of the buttons</h7>
+                    <br>
+					<br>
+                    <pre><code class="language-csharp">						
+using System.Collections.Generic;
+
+						
+public class WheelButtonInput : ButtonInputSubject
+{
+
+    //List with bools for each button on the wheel
+    public List<bool> ButtonStates = new List<bool>(new bool[128]);
+
+    //Is a button being pressed?
+    private bool isBeingPressed = false;
+
+    //timer to prevent multiple inputs
+    private float timer = 0;
+
+    private void Start()
+    {
+        //Initialize the wheel for good mesure
+        LogitechGSDK.LogiSteeringInitialize(true);
+    }
+
+    void Update()
+    {
+        //update the Information from the wheel and the buttons
+        LogitechGSDK.LogiUpdate();
+
+        //Update the button states
+        UpdateButtonStates();
+    }
+
+
+
+    //checks if there is a button is pressed on the current frame
+    void UpdateButtonStates()
+    {
+        //Forloop to check each button
+        for (int i = 0; i < ButtonStates.Count; i++)
+        {
+            bool isPressed = LogitechGSDK.LogiButtonIsPressed(0, i);
+
+			//if the button is pressed but its not saved in the array, set true
+            if (isPressed && !ButtonStates[i])
+            {
+                ButtonStates[i] = true;
+
+				//send to interface
+                OnNotify(i, true);
+            }
+			//if the button is not pressed but its not saved in the array, set false
+            else if (!isPressed && ButtonStates[i])
+            {
+                ButtonStates[i] = false;
+				
+				//send to interface
+                OnNotify(i, false);
+            }
+        }
+
+    }
+}</code> </pre>
+<br>
+<br>
+<br>
+<h7 class="site-heading mb-3">This script was used to get the Rotation of the steering wheel</h7>
+<br>
+<br>
+<pre><code class="language-csharp"> 
+using UnityEngine;
+
+public class SteeringWheelInput : WheelInputSubject
+{
+    //The boounds set to calculate the normalized input
+    [Header("normalization Bounds")]
+    public float MaxSteeringValue = 360;
+    public float MinSteeringValue = -360;
+
+    //normalized value of the steering wheel
+    [Header("Current Output")]
+    public float SteeringInput;
+
+    //refrence to the LogitechGSDK's InputManager
+    private LogitechGSDK.DIJOYSTATE2ENGINES rec;
+
+
+    private void Update()
+    {
+        //update the Information from the wheel and the buttons
+        LogitechGSDK.LogiUpdate();
+
+        //returns the state of the controller and stores it in rec
+        rec = LogitechGSDK.LogiGetStateUnity(0);
+
+        //gets and sets a normalized value of the steering wheel
+        GetWheelInput();
+    }
+
+    //gets and sets a normalized value of the steering wheel
+    private void GetWheelInput()
+    {
+        //gets and sends a normalized value of the steering wheel to the observers
+        OnWheelInput(NormalizeRawInput(rec.SteeringWheel));
+    }
+
+
+    //Calculates the normalized input of the SteeringWheel
+    private float NormalizeRawInput(int rawValue)
+    {
+        //Calcutation that normalizes the raw input of the pedals
+        return Mathf.Lerp(MaxSteeringValue, MinSteeringValue, Mathf.InverseLerp(32767, -32768, rawValue));
+    }
+}
+</code> </pre>
+
+					<p class="lead"> <a href="https://www.notion.so/Custom-Steering-Wheel-Documentation-Logitech-G29-1379e937e3e780e283e8d88ecfd14b51?source=copy_link">Notion page with basic documentation about the input system</a> </p>
 					<p class="lead"> <a href="https://github.com/Lamzka/Project_vreemde_hardware">Github</a> </p>
 					<p class="lead"></p>
+                    <h5 class="site-heading mb-3">Package destination list</h5>
+		
+					<h7 class="site-heading mb-3">This script retrieves information from the packages. In addition to displaying the data, it also sends it to the waypoint script to indicate the planet's location to the player.</h7>
+	
+<br>
+<br>
+<br>
+<pre><code class="language-csharp"> 
+using TMPro;
+using UnityEngine;
+
+// This class manages and displays information about the current package quest.
+public class SetPackageInfo : MonoBehaviour, ISendCurrentQuestInfo
+{
+    [Header("Display")]
+    [SerializeField] private TMP_Text questDisplay; // Reference to a TextMeshPro text object for displaying quest info.
+
+    [Header("Current Quest Info")]
+    [SerializeField] private string currentQuestReciever; // Stores the name of the package receiver.
+    [SerializeField] private string currentQuestDestination; // Stores the destination planet for the package.
+
+    private void Start()
+    {
+        // Finds and assigns the TextMeshPro text component tagged as "DestinationList".
+        questDisplay = GameObject.FindGameObjectWithTag("DestinationList").GetComponent<TMP_Text>();
+
+        // Initializes the quest display with a default message indicating no active quest.
+        DisplayNewInfo(false);
+    }
+
+    private void OnEnable()
+    {
+        // Registers this object as a listener to the "PackageGrabPoint" for quest updates.
+        GameObject.FindGameObjectWithTag("PackageGrabPoint").GetComponent<QuestInfoSubject>().SetListeners(this);
+    }
+
+    private void OnDisable()
+    {
+        // Removes this object as a listener from the "PackageGrabPoint" to stop receiving quest updates.
+        GameObject.FindGameObjectWithTag("PackageGrabPoint").GetComponent<QuestInfoSubject>().RemoveListeners(this);
+    }
+
+    // Called by the QuestInfoSubject to pass package information to this script.
+    public void PackageReceiverInfo(PackageInfo packageInfo)
+    {
+        // Sets the quest information based on the received package info.
+        SetQuesInformation(packageInfo);
+    }
+
+    private void SetQuesInformation(PackageInfo packageInfo)
+    {
+        if (packageInfo == null) // Checks if the package info is null (no package loaded).
+        {
+            currentQuestReciever = null; // Clears the current receiver info.
+            currentQuestDestination = null; // Clears the current destination info.
+
+            DisplayNewInfo(true); // Updates the display to show "No packages loaded."
+
+            // Clears the destination info in the GameManagers component.
+            GameObject.FindGameObjectWithTag("GameManagers").GetComponent<ISetDestinationInfo>().SetDestinationName(null);
+        }
+        else // If valid package info is provided.
+        {
+            // Randomly selects a receiver name from the package info.
+            currentQuestReciever = packageInfo.RecieverName[Random.Range(0, packageInfo.RecieverName.Length)];
+
+            // Randomly selects a destination from the package info.
+            currentQuestDestination = packageInfo.RecieverPlanet[Random.Range(0, packageInfo.RecieverPlanet.Length)];
+
+            // Updates the destination info in the GameManagers component.
+            GameObject.FindGameObjectWithTag("GameManagers").GetComponent<ISetDestinationInfo>().SetDestinationName(currentQuestDestination);
+
+            DisplayNewInfo(false); // Updates the display with the new quest details.
+        }
+    }
+
+    private void DisplayNewInfo(bool isNull)
+    {
+        if (isNull) // If no package is loaded.
+        {
+            questDisplay.text = "No packages loaded"; // Display a default message.
+        }
+        else // If a package is loaded.
+        {
+            // Displays the current receiver and destination information.
+            questDisplay.text = "Deliver package to: " + currentQuestReciever + " on " + currentQuestDestination;
+        }
+    }
+}
+
+</code> </pre>
 				</div>
 			</div>
 		</div>
