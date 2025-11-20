@@ -52,8 +52,8 @@
 		<div class="container">
 			<div class="row justify-content-center mb-5">
 				<div class="col-md-10 text-center">
-					<h2 class="site-heading mb-3">Gameplay Video</h2>
-					<p class="lead">Watch a quick demo or trailer of the project in action.</p>
+					<h1 class="site-heading mb-3">Gameplay Video</h1>
+					<h2 class="lead">Watch a quick demo or trailer of the project in action.</h2>
 				</div>
 			</div>
 	
@@ -70,22 +70,59 @@
 		<div class="container">
 			<div class="row justify-content-center mb-1">
 				<div class="col-md-10 text-center">
-					<h2 class="site-heading mb-3">About this Project</h2>
-					<p class="lead">This project is a game built in Unity.</p>
-					<p class="lead">This project was our first actual introduction to using hardware outside of vr headsets. this time we were using the Logitech G29.	</p>
-					<p class="lead">This was a group project, this was made with 3 other students.</p>
-					<p class="lead">this game is about delivering packages to a planet with a spaceship</p>
+					<h1 class="site-heading mb-3">About this Project</h1>
+					<h2 class="lead">This project is a game built in Unity.</p>
+					<h2 class="lead">This project was our first actual introduction to using hardware outside of vr headsets. this time we were using the Logitech G29.	</h2>
+					<h2 class="lead">This was a group project, this was made with 3 other students.</h2>
+					<h2 class="lead">this game is about delivering packages to a planet with a spaceship</h2>
 				</div>
 			</div>
 		</div>
 	</section>
+      <section class="site-section" id="section-gallery">
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div class="col-md-10 text-center">
+					<h1 class="site-heading mb-3">Gallery</h1>
+					<h2 class="lead">A collection of in-game screenshots</h2>
+				</div>
+			</div>
+			<div class="row">
+				<!-- Image 1 -->
+				<div class="col-md-4 mb-4">
+					<a href="images/Custom/Screenshot 2025-06-25 152335.png" target="_blank">
+						<img src="images/Custom/Screenshot 2025-06-25 152335.png" class="img-fluid rounded shadow-sm" alt="Screenshot 1">
+					</a>
+				</div>
+				<!-- Image 2 -->
+				<div class="col-md-4 mb-4">
+					<a href="images/Custom/Screenshot 2025-06-25 152609.png" target="_blank">
+						<img src="images/Custom/Screenshot 2025-06-25 152609.png" class="img-fluid rounded shadow-sm" alt="Screenshot 2">
+					</a>
+				</div>
+				<!-- Image 3 -->
+				<div class="col-md-4 mb-4">
+					<a href="images/Custom/space3.png" target="_blank">
+						<img src="images/Custom/space3.png" class="img-fluid rounded shadow-sm" alt="Screenshot 3">
+					</a>
+				</div>
+	
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+
 	<section class="site-section" id="section-description">
 		<div class="container">
 			<div class="row justify-content-center mb-10">
 				<div class="col-md-10 text-center">
-					<h2 class="site-heading mb-3">What ive used</h2>
-					<p class="lead">Hardware wise we used The Logitech G29 and a quest 3</p>
-					<p class="lead">i worked on player input/interaction, and various interfaces</p>
+					<h1 class="site-heading mb-3">What ive used</h1>
+					<h2 class="lead">Hardware wise we used The Logitech G29 and a quest 3</h2>
+					<h2 class="lead">i worked on player input/interaction, and various interfaces</h2>
 				</div>
 			</div>
 		</div>
@@ -98,10 +135,10 @@
 
 					<h5 class="site-heading mb-3">Steering wheel input system</h5>
                     <br>
-					<h7 class="site-heading mb-3">I developed a custom input system for the Logitech G21. The official SDK only provided a basic demo script and lacked a builtin input manager, so we had to build our own from scratch. We initially attempted to use Unity’s new Input System, but it didn’t register the G21 inputs correctly. As a result, we had to improvise and create a custom solution tailored to the hardware. </h7>
+					<h4 class="site-heading mb-3">I developed a custom input system for the Logitech G21. The official SDK only provided a basic demo script and lacked a builtin input manager, so we had to build our own from scratch. We initially attempted to use Unity’s new Input System, but it didn’t register the G21 inputs correctly. As a result, we had to improvise and create a custom solution tailored to the hardware. </h4>
 					<br>
 					<br>
-                    <h7 class="site-heading mb-3">This script was used to get the states of the buttons</h7>
+                    <h4 class="site-heading mb-3">This script was used to get the states of the buttons</h4>
                     <br>
 					<br>
                     <pre><code class="language-csharp">						
@@ -168,7 +205,7 @@ public class WheelButtonInput : ButtonInputSubject
 <br>
 <br>
 <br>
-<h7 class="site-heading mb-3">This script was used to get the Rotation of the steering wheel</h7>
+<h4 class="site-heading mb-3">This script was used to get the Rotation of the steering wheel</h4>
 <br>
 <br>
 <pre><code class="language-csharp"> 
@@ -225,10 +262,10 @@ public class SteeringWheelInput : WheelInputSubject
 <br>
 <br>
 <br>
-                    <h5 class="site-heading mb-3">Ship Rigidbody Controller</h5>
+                    <h3 class="site-heading mb-3">Ship Rigidbody Controller</h3>
                     <br>
-					<h7 class="site-heading mb-3">The controll of the ship took the longest to get right, i spend alot of hours trying to fine tune the feel of the ship</h7>
-					<h7 class="site-heading mb-3">definatively learned alot from the uniqe problems ive faced with these scripts </h7>
+					<h4 class="site-heading mb-3">The controll of the ship took the longest to get right, i spend alot of hours trying to fine tune the feel of the ship</h6>
+					<h4 class="site-heading mb-3">definatively learned alot from the uniqe problems ive faced with these scripts </h4>
 					<br
 					<br>
 					<pre><code class="language-csharp">
@@ -418,8 +455,8 @@ public class ShipRidgidbodyController : MonoBehaviour, IButtonInput, IPedalInput
 </pre></code>
 
 
-<h5 class="site-heading mb-3">Package destination list</h5>
-<h7 class="site-heading mb-3">This script retrieves information from the packages. In addition to displaying the data, it also sends it to the waypoint script to indicate the planet's location to the player.</h6>
+<h3 class="site-heading mb-3">Package destination list</h3>
+<h4 class="site-heading mb-3">This script retrieves information from the packages. In addition to displaying the data, it also sends it to the waypoint script to indicate the planet's location to the player.</h4>
 
 
 <pre><code class="language-csharp"> 
@@ -510,38 +547,7 @@ public class SetPackageInfo : MonoBehaviour, ISendCurrentQuestInfo
 			</div>
 		</div>
 	</section>
-	<section class="site-section" id="section-gallery">
-		<div class="container">
-			<div class="row justify-content-center mb-5">
-				<div class="col-md-10 text-center">
-					<h2 class="site-heading mb-3">Gallery</h2>
-					<p class="lead">A collection of in-game screenshots</p>
-				</div>
-			</div>
-			<div class="row">
-				<!-- Image 1 -->
-				<div class="col-md-4 mb-4">
-					<a href="images/Custom/Screenshot 2025-06-25 152335.png" target="_blank">
-						<img src="images/Custom/Screenshot 2025-06-25 152335.png" class="img-fluid rounded shadow-sm" alt="Screenshot 1">
-					</a>
-				</div>
-				<!-- Image 2 -->
-				<div class="col-md-4 mb-4">
-					<a href="images/Custom/Screenshot 2025-06-25 152609.png" target="_blank">
-						<img src="images/Custom/Screenshot 2025-06-25 152609.png" class="img-fluid rounded shadow-sm" alt="Screenshot 2">
-					</a>
-				</div>
-				<!-- Image 3 -->
-				<div class="col-md-4 mb-4">
-					<a href="images/Custom/space3.png" target="_blank">
-						<img src="images/Custom/space3.png" class="img-fluid rounded shadow-sm" alt="Screenshot 3">
-					</a>
-				</div>
 	
-				<!-- Add more images below if needed -->
-			</div>
-		</div>
-	</section>
 
 
 	<script src="js/vendor/jquery.min.js"></script>
@@ -566,4 +572,3 @@ public class SetPackageInfo : MonoBehaviour, ISendCurrentQuestInfo
     </html>
 
 
-	//come on git dont do this too me
